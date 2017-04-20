@@ -7,7 +7,7 @@ About:
 
 The idea:
 --------
-Run a micro wiki service on your workstation with the content stored in a git repository, with a remote repo as the master (the master can even be on github).
+Run a mini wiki service on your workstation with the content stored in a git repository, with a remote repo as the master (the master can even be on github).
 
 Why:
 ---
