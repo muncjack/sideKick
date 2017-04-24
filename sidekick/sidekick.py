@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""
+SideKick Wiki by Peder Pedersen
+
+Main python file - run this to run the wiki server
+"""
+
 from __future__ import print_function
 import os
 
@@ -8,30 +14,11 @@ from flask import Flask, render_template, request, jsonify, send_from_directory
 
 import wiki
 
+__author__ = 'Peder Pedersen'
+
 app = Flask(__name__)
 # don't let flask use all the systems memory limit max file size to 16MB
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-
-# get the wiki to do it's start-up/setup
-if 'HOME' in os.environ.keys():
-    wiki.startup(os.path.join(os.environ['HOME'], '.sideKick', 'default'))
-else:
-    wiki.startup(os.path.join(os.environ['USERPROFILE'], '.sideKick', 'default'))
-
-if 'SIDEKICK_PORT' in os.environ.keys():
-    serverPort = os.environ['SIDEKICK_PORT']
-else:
-    serverPort = 8080
-
-if 'SIDEKICK_IP' in os.environ.keys():
-    serverIP = os.environ['SIDEKICK_IP']
-else:
-    serverIP = '127.0.0.1'
-    
-if 'SIDEKICK_DEBUG' in os.environ.keys():
-    serverDebug = os.environ['SIDEKICK_DEBUG']
-else:
-    serverDebug = False
 
 
 # Regular flask view function - Sijax is unavailable here
@@ -178,8 +165,29 @@ def WikiGit():
     return jsonify(resp)
 
 if __name__ == '__main__':
+    # get the wiki to do it's start-up/setup
+    if 'HOME' in os.environ.keys():
+        wiki.startup(os.path.join(os.environ['HOME'], '.sideKick', 'default'))
+    else:
+        wiki.startup(os.path.join(os.environ['USERPROFILE'], '.sideKick', 'default'))
+
+    if 'SIDEKICK_PORT' in os.environ.keys():
+        serverPort = os.environ['SIDEKICK_PORT']
+    else:
+        serverPort = 8080
+
+    if 'SIDEKICK_IP' in os.environ.keys():
+        serverIP = os.environ['SIDEKICK_IP']
+    else:
+        serverIP = '127.0.0.1'
+        
+    if 'SIDEKICK_DEBUG' in os.environ.keys():
+        serverDebug = os.environ['SIDEKICK_DEBUG']
+    else:
+        serverDebug = False
+
     app.logger.debug('web server port is: ' + str(serverPort))
     app.logger.debug('web server ip is: ' + serverIP)
     app.run(debug=serverDebug, port=serverPort, host=serverIP)
     
-print("start-up done.")
+    print("start-up done.")

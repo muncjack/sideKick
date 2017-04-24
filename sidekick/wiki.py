@@ -1,3 +1,7 @@
+"""
+Utility functions for implementing wiki behaviour (generally to do with saving and loading files)
+"""
+
 from __future__ import print_function
 import os
 import re
@@ -6,6 +10,8 @@ import shutil
 import subprocess
 
 import mygit
+
+__author__ = 'Peder Pedersen'
 
 wikiBaseFileDir = ''
 wikiBaseAttchDir = ''

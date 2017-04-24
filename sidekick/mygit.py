@@ -1,7 +1,13 @@
+"""
+Custom git integration - uses shutil and subprocess to call the command-line git tools
+"""
+
 from __future__ import print_function
 import os
 import subprocess
 import shutil
+
+__author__ = 'Peder Pedersen'
 
 
 class startup:
