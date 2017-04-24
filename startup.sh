@@ -6,19 +6,19 @@ if [ -n "$WORKING_DIR" ]
     cd $WORKING_DIR
 fi
 
-if [ -f ./bin/activate ]
+if [ -f ./env/bin/activate ]
   then
     echo activating virtualenv
-    . ./bin/activate
+    . ./env/bin/activate
   else
     if which virtualenv
       then
-        virtualenv .
-        . ./bin/activate
+        virtualenv env
+        . ./env/bin/activate
     elif [ -f ~/bin/virtualenv ] 
       then
-        ~/bin/virtualenv .
-        . ./bin/activate
+        ~/bin/virtualenv env
+        . ./env/bin/activate
     fi 
 fi
 
@@ -36,4 +36,5 @@ elif ! python -c 'import flask' > /dev/null
 fi
 
 
-python sideKick.py
+python sidekick/sidekick.py
+

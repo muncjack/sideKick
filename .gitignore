@@ -1,11 +1,12 @@
 bin/
 include/
 lib/
+env/
 
 *.pyc
 *.pyo
 
 *~
-
+*.swp
 
 nohup.out
