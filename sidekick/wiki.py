@@ -1,27 +1,26 @@
-import os, re
+from __future__ import print_function
+import os
+import re
 from os import listdir
-import shutil, json, subprocess
-import mygit 
+import shutil
+import subprocess
 
+import mygit
 
 wikiBaseFileDir = ''
 wikiBaseAttchDir = ''
-global deBugMsg 
+global deBugMsg
 
-"""
-
-
-"""
 
 def startup(baseDir):
-    print 'DEBUG: runing wiki start up checks'
+    print('DEBUG: runing wiki start up checks')
     global wikiBaseFileDir
     global wikiBaseAttchDir
     wikiBaseDir = os.path.join(baseDir, 'wiki')
     wikiBaseFileDir = os.path.join(wikiBaseDir, 'files')
     wikiBaseAttchDir = os.path.join(wikiBaseDir, 'attachements')
     if os.path.exists(baseDir) == False:
-            print 'SETUP: creating directories for wiki'
+            print('SETUP: creating directories for wiki')
             os.makedirs(baseDir)
     if os.path.exists(wikiBaseFileDir) == False:
         os.makedirs(wikiBaseFileDir)
@@ -31,10 +30,12 @@ def startup(baseDir):
     wikiRepo = mygit.startup(wikiBaseDir)
     return True
 
+
 def deFang(reqStr):
     for char in ["\\", ";", "*", "?"]:
         reqStr = reqStr.replace(char, "")
     return reqStr
+
 
 def webpath2ospath(webpath, t):
     if t == 'f':
@@ -66,7 +67,7 @@ def GetFolderContent(current):
             folders.append(item)
         else:
             files.append(item)
-    return {'path': current, 'folders': sorted(folders), 'files': sorted(files) }
+    return {'path': current, 'folders': sorted(folders), 'files': sorted(files)}
 
 
 def GetFile(filePath, filename):
@@ -78,10 +79,10 @@ def GetFile(filePath, filename):
 
 
 def saveFile(Path, fileName, blob):
-    print "saveFile I have been called path: " + Path + " File: " + fileName
+    print("saveFile I have been called path: " + Path + " File: " + fileName)
     fullName = webpath2ospath(Path + '/' + fileName, 'f')
     Path = webpath2ospath(Path, 'f')
-    print 'file path is: ' + Path + ' FullName is: ' + fullName
+    print('file path is: ' + Path + ' FullName is: ' + fullName)
     if os.path.isdir(Path) == False:
         if os.path.exists(Path) == True:
             return "404 dir " + Path + " is a file"
@@ -103,7 +104,7 @@ def saveFile(Path, fileName, blob):
 def fileDel(filePath, fileName):
     f = webpath2ospath(filePath + '/' + fileName, 'f')
     a = webpath2ospath(filePath + '/' + fileName, 'a')
-    print 'file to be deleted is: ' + f + '\nattachements directory is: ' + a
+    print('file to be deleted is: ' + f + '\nattachements directory is: ' + a)
     recode = ''
     if os.path.exists(f):
         if os.path.exists(a):
@@ -113,8 +114,14 @@ def fileDel(filePath, fileName):
         recode = 'unknown wiki entry : ' + filePath + '/' + fileName
     return recode
 
+
 def fileRename(request):
-    print request['oldpath']
+    """
+    I can't see how this can possibly work...
+
+    Is this still used for anything?
+    """
+    print(request['oldpath'])
     op = webpath2ospath(request['oldpath'])
     np = webpath2ospath(request['newpath'])
     if op != np:
@@ -124,11 +131,11 @@ def fileRename(request):
     np = os.path.join(np, request['newfile'])
     subprocess.Popen(['git mv', op, np], stdout=subprocess.PIPE)
     wikiRepo.mv(oldfile, newfile)
-    return 
+
 
 def fileSearch(s):
     filefound = []
-    print "DEBUG: " + s
+    print("DEBUG: " + s)
     for root, dirs, files in os.walk(wikiBaseFileDir, topdown=False):
         for name in files:
             print(os.path.join(root, name))
@@ -136,44 +143,44 @@ def fileSearch(s):
             content = f.read()
             f.close()
             if re.search(s, content, re.IGNORECASE):
-                print "yes" + ospath2webpath(root)
+                print("yes" + ospath2webpath(root))
                 filefound.append([ospath2webpath(root), name])
     return filefound
 
+
 def attachmentGet(fpath, fname, attach):
     fullPath = fpath + '/' + fname
-    print 'hello'
+    print('hello')
     return [webpath2ospath(fullPath, 'a'), deFang(attach)]
 
 
 def gitStatus():
     resp = {}
-#    print "--->DEBUG: call localstatus"
-    (resp['Tracked'],resp['Untracked'], resp['pushRequired']) = wikiRepo.localStatus()
-#    print "--->DEBUG: call localstatus", resp
+#    print("--->DEBUG: call localstatus")
+    (resp['Tracked'], resp['Untracked'], resp['pushRequired']) = wikiRepo.localStatus()
+#    print("--->DEBUG: call localstatus", resp)
     resp['pullRequired'] = wikiRepo.remoteStatus()
-#    print "--->DEBUG:  ", resp
+#    print("--->DEBUG:  ", resp)
     return resp
+
 
 def gitPull():
     return wikiRepo.pull()
 
+
 def gitPush():
     return wikiRepo.push()
 
-def gitCommit(msg):
-    return 'hmm'
 
 def gitAddCommitAll(msg):
-    print "--------> DEBUG msg is: ", msg
+    print("--------> DEBUG msg is: ", msg)
     # time to run git add all new files
     result = wikiRepo.add('-A')
     if result['status'] == 'OK':
         result['add'] = result['status']
-        # run git commit all 
+        # run git commit all
         r2 = wikiRepo.commit(msg)
         result['output'] += r2['output']
         result['status'] = r2['status']
     return result
-
 
