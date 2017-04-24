@@ -1,0 +1,117 @@
+dirTree {
+    list-style: none;
+    padding:0px;
+    margin-left:1px; 
+    }
+#div-left div{
+    overflow: auto;
+    }
+    
+
+
+ul.dirTree { 
+    margin-left:0px;
+    margin-top: 0px;
+    /*padding-top:10px; */
+    padding-left: 3px;
+    padding:3px;
+    }
+/* Control how "spaced out" the tree is */
+ul.dirTree ul { 
+     display: none;
+     margin-left:5px;
+     padding:4px;
+    }
+
+ul.dirTree li { 
+    list-style: none; 
+    margin-left:0px; 
+    padding:0px;
+    padding-left: 15px;
+    }
+
+
+.lifolder-plus { cursor: default; background: url(/static/img/plus.gif) no-repeat left top; }
+.lifolder-minus { cursor: default; background: url(/static/img/minus.gif) no-repeat left top; }
+
+ul.folderTree { 
+    margin-left:0px;
+    margin-top: 0px;
+    /*padding-top:10px; */
+    padding-left: 3px;
+    padding:3px;
+    }
+/* Control how "spaced out" the tree is */
+ul.folderTree ul { 
+     display: none;
+     margin-left:5px;
+     padding:4px;
+     border: 1px solid rgb(238, 233, 233);
+    }
+
+
+ul.folderTree li { 
+    list-style: none; 
+    margin-left:0px; 
+    padding:0px;
+    padding-left: 15px;
+    }
+
+ul.folderTree a.file { 
+    list-style: none; 
+    margin-left:0px; 
+    padding:0px;
+    padding-left: 0px;
+        color: blue;
+    }
+
+
+
+
+ul.tabs {
+    margin-bottom: 0px; 
+    margin: 0px;
+    padding: 0px;
+}
+
+ul.tabs li {
+    display:inline;
+    /*padding:5px 10px;*/
+    display:inline-block;
+    background:#666;
+    color:#fff;
+    text-decoration:none;
+        padding: 5px;
+}
+ul.tabs li.active {
+    background:#fff;
+    color:#000;
+}
+div.left-div div {
+    background:#fff;
+    color:#000;
+    margin-left: 0px;
+    height: calc(100% - 25px);
+}
+#div-searchresult {
+    overflow: auto;
+    background: rgb(235, 232, 232);
+    height: calc(100% - 60px);
+    }
+
+#ul-search-result {
+    /*cursor: pointer;*/
+    background: none;
+    padding: 5px;
+    
+    }
+    
+#ul-search-result li{
+    cursor: pointer;
+    background: #dfdfdf;
+    }
+
+#ul-search-result li.gray{
+    cursor: pointer;
+    background: rgba(205, 212, 233, 0.72);
+    }

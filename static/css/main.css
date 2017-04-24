@@ -1,0 +1,128 @@
+.top-div {
+    margin-bottom: 5px;
+    /*background: gray;*/
+    background: rgb(185, 167, 167);
+    width: 100%;
+    height: 20px;
+}
+
+.top-div a {
+    background: #00aa99;
+    color: brown;
+    margin: 5px;
+/**    text-decoration: underline;**/
+    cursor: pointer;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.top-div div.div-top-status{
+    width: 50%;
+    height: inherit;
+    float: right;
+    border: 1px solid black;
+}
+
+.div-body{
+    float: left;
+    width: 100%;
+    /*height: 90%;*/
+    height: calc(100% - 25px);
+}
+
+.left-div {
+    margin: 1px;
+    float: left;
+    /*height: 90%;*/
+    height: calc(100% - 25px);
+    width: calc(20% - 5px);
+    /*background: gray;*/
+    /*background: rgb(177, 240, 240);*/
+    /*overflow:auto;*/
+}
+
+.left-div .div-tabs-holder {
+    margin-left: 10px;
+    /*display: none;*/
+    background-color: red;
+}
+
+.left-div .div-tab {
+    /*margin-left: 10px;*/
+    /*display: none;*/
+    background-color: orange;
+}
+
+.main-div {
+    /*margin: 5px;*/
+/**    float: left; **/
+    /*width: 85%;*/
+    float: inherit;
+    width: 80%;
+    height: calc(100% - 25px);
+    /*height: 100%;*/
+}
+
+.main-div  .button-dev {
+    /*background: gray;*/
+    /*background: rgb(140, 179, 238);*/
+    background: rgb(189, 215, 255);
+    width: initial;
+}
+
+.main-div  .previewPane, .div_edit {
+    position:relative;
+    margin: 5px;
+    width: initial;
+    /*height: 90%;
+    height: initial;*/
+    height: calc(100% - 45px);
+    overflow:auto;
+}
+
+#DocEditor {
+    margin: 5px;
+    float: left;
+    /*width: inherit;*/
+    width: calc(100% - 47px);
+    height: 90%;
+}
+
+#previewPane table td {
+    padding: 8px;
+    line-height: 20px;
+    text-align: left;
+    vertical-align: top;
+    border-top: 1px solid #dddddd;
+    border-right: 1px solid #dddddd;
+}
+
+#previewPane pre {
+   white-space: pre;
+   overflow:auto;
+}
+
+#previewPane code {
+   /*white-space: pre;*/
+   padding: 0px;
+}
+
+.base-div {
+    border: 1px solid black;
+    margin: 5px;
+}
+
+table.list th {
+    text-decoration: underline;
+    background-color: red;
+}
+
+table.list tr.odd td {
+    background-color: black;
+    color: white;
+}
+
+a.help {
+    color: gray;
+}

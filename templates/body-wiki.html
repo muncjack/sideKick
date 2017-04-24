@@ -1,0 +1,94 @@
+<div id="left-div" class="left-div">
+    <ul id="ul-left-babs" class="tabs">
+        <li id="li-left-dir" href="#div-left-dir" onclick="tabSwitch($(this))">tree</li>
+        <li id="li-left-search" href="#div-left-search" onclick="tabSwitch($(this))">search</li>
+        <!--<li id="li-left-dir" href="#div-left-dir" >tree view</li>
+        <li id="li-left-search" href="#div-left-search" >search</li>-->
+        <script>
+            $(document).ready(function(){
+                tabSwitch($('#li-left-dir'));
+            });
+        </script>
+    </ul>
+                                    <!-- tab "panes" -->
+    <div id="div-left-dir">
+        <ul class="folderTree" style="display: block">
+            <li id="lifolder-" class="lifolder-plus" onclick="wikiFolderOnclick('/')">/ </li><ul id="ul-treeview-2F"></ul>
+            <li><a class="help" href="#" id="callForHelp" onclick="GetAboutHelp('help')">help</A></li>
+            <li><a class="help" href="#" id="TelMeAboutThis" onclick="GetAboutHelp('about')">about</a></li>
+        </ul>
+
+    </div>
+    <div id="div-left-search">
+        search for string:
+        <form id="form-search" onSubmit='wikiSearchSubmit();return false'>
+            <input id='input-search' type="text" name="input-search" title="Just type string for search and press entre, the search is case insensitive and you can use regex for the search"/>
+            <input type="submit" value="search">
+        </form>
+        <script>
+            //console.log('DEBUG: setup form submit');
+            //$('#form-search').submit(function(e){
+            //    console.log('DEBUG: form-search submit action');
+            //    wikiSearchSubmit();
+            //    e.preventDefault();
+            //});
+            //console.log('DEBUG: done form submit');
+         </script>
+        <div id="div-searchresult">
+            result:
+            <ul id="ul-search-result"/>
+        </div>
+    </div><!--end div-left-search-->
+</div>
+
+<div id='main-div' class="main-div">
+    <div id='divDirButtons' class="button-dev" >
+
+        <button id='wikiDirNew' onclick="alert('mkdir not ready');">New Dir</button>
+        <button id='wikiDirDel' onclick="alert('mkdir not ready');">Del Dir</button>
+        <button id='wikiFileNew' onclick="wikiNewFile()">New File</button>
+    </div>
+    <div id='divFileButtons' style="display: none" class="button-dev" >
+
+        Mode: <button id='ModeButton' onclick="switchMode()">edit</button>
+        <input id='wikiFilePath' type="text" name="wikifilePath" disabled />/
+        <input id='wikiFileName' type="text" name="wikifileName" disabled />
+        <button id='wikiFileDel' onclick="wikiFileDelete()">Delete File</button>
+    </div>
+    <div id='divDirContent' >
+    
+    </div>
+     <div id='div_edit' style="display: none" class="div_edit" >
+        <TEXTAREA id='DocEditor' class='DocEditor' >
+    
+        </TEXTAREA>
+    </div>
+
+    <div id='previewPane' style="display: none" class="previewPane" >
+        this means ther is a problem !!!!<BR>try enablining javascript
+    </div>                           
+</div>
+
+<script>
+    // this part is for the marked so it does the highlight.js on the code sections  
+    marked.setOptions({
+        highlight: function(code) {
+            return hljs.highlightAuto(code).value;
+        }
+    });
+    
+    $(document).ready(function(){
+        if (typeof fileName != 'undefined'){
+            WikiFileGet('', filePath, fileName);
+            fileName = undefined;
+        }
+        if (typeof filePath != 'undefined'){
+            wikiFolderGoto(filePath);
+            filePath = undefined;
+        };
+       // get the git status and run backgroud schedule
+       wikiGitStatusCheck(autocheck=true); 
+    });
+    //wikiStatusAutoCheck();
+    
+</script>

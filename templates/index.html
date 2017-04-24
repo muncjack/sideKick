@@ -1,0 +1,42 @@
+<html>
+    <head>
+            
+
+        <link rel="stylesheet" type="text/css" href="/static/css/main.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="/static/css/dirTree.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="/static/editor/style.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="/static/css/modal-basic.css" media="screen" />
+        <!--<link rel="stylesheet" type="text/css" href="/static/styles/default.css" />-->
+        <link rel="stylesheet" type="text/css" href="/static/styles/railscasts.css" />
+        <!-- Load the wiki basic functions -->
+        <SCRIPT src="/static/js/main.js" type="text/javascript" > </SCRIPT>
+        <SCRIPT src="/static/js/wiki.js" type="text/javascript" > </SCRIPT>
+        <!--<SCRIPT src="/static/js/jquery.simplemodal-1.4.4.js" type="text/javascript" > </SCRIPT> -->
+        <SCRIPT src="/static/js/highlight.pack.js" type="text/javascript" > </SCRIPT>
+        <!-- Load the marked functions -->
+        <SCRIPT src="/static/editor/marked.js" type="text/javascript" > </SCRIPT>
+        <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script> -->
+        <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+        <SCRIPT src="/static/js/jquery.simplemodal-1.4.4.js" type="text/javascript" > </SCRIPT>
+    </head>
+    <body>
+    
+        <div id="div-menubar" class="top-div">
+            <A href="/?pagemode=admin" id="TopA-admin" onclick="loadMode('admin');;return false">admin</A>
+            <A href="/?pagemode=wiki" id="TopA-wiki" onclick="loadMode('wiki');;return false">wiki</A>
+            <A href="/?pagemode=networking" id="TopA-networking" onclick="loadMode('networking');;return false">networking</A>
+            <div class="div-top-status" id="div-top-status">
+                this is for the status info (ie: git status)
+            </div>
+        </div>
+        
+        <div id="div-body" class="div-body">
+            <script>
+                loadMode('{{parameters['pagemode']}}');
+                {% for item in parameters %}
+                    {{item}} = '{{parameters[item]}}'
+                {% endfor %}
+            </script>
+        </div>
+    </body>
+</html>
