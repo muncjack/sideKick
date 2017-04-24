@@ -10,7 +10,7 @@
             });
         </script>
     </ul>
-                                    <!-- tab "panes" -->
+    <!-- tab "panes" -->
     <div id="div-left-dir">
         <ul class="folderTree" style="display: block">
             <li id="lifolder-" class="lifolder-plus" onclick="wikiFolderOnclick('/')">/ </li><ul id="ul-treeview-2F"></ul>
@@ -25,15 +25,6 @@
             <input id='input-search' type="text" name="input-search" title="Just type string for search and press entre, the search is case insensitive and you can use regex for the search"/>
             <input type="submit" value="search">
         </form>
-        <script>
-            //console.log('DEBUG: setup form submit');
-            //$('#form-search').submit(function(e){
-            //    console.log('DEBUG: form-search submit action');
-            //    wikiSearchSubmit();
-            //    e.preventDefault();
-            //});
-            //console.log('DEBUG: done form submit');
-         </script>
         <div id="div-searchresult">
             result:
             <ul id="ul-search-result"/>
@@ -43,9 +34,6 @@
 
 <div id='main-div' class="main-div">
     <div id='divDirButtons' class="button-dev" >
-
-        <button id='wikiDirNew' onclick="alert('mkdir not ready');">New Dir</button>
-        <button id='wikiDirDel' onclick="alert('mkdir not ready');">Del Dir</button>
         <button id='wikiFileNew' onclick="wikiNewFile()">New File</button>
     </div>
     <div id='divFileButtons' style="display: none" class="button-dev" >
@@ -59,13 +47,13 @@
     
     </div>
      <div id='div_edit' style="display: none" class="div_edit" >
-        <TEXTAREA id='DocEditor' class='DocEditor' >
+        <textarea id='DocEditor' class='DocEditor' >
     
-        </TEXTAREA>
+        </textarea>
     </div>
 
     <div id='previewPane' style="display: none" class="previewPane" >
-        this means ther is a problem !!!!<BR>try enablining javascript
+        this means ther is a problem !!!!<br>try enablining javascript
     </div>                           
 </div>
 

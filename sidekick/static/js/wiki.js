@@ -298,7 +298,7 @@ function wikiSearchSubmit(){
                 scount ++;
                 });
             if (scount == 0){
-                $('#ul-search-result').append('<span style="color: green">not results...</span>');
+                $('#ul-search-result').append('<span style="color: green">no results...</span>');
             }
             }else{alert('search failed!' )}},
         dataType: "json"
