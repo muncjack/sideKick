@@ -9,16 +9,32 @@ Main python file - run this to run the wiki server
 
 from __future__ import print_function
 import os
+import socket
+import time
 
 from flask import Flask, render_template, request, jsonify, send_from_directory
 
 import wiki
+import config
 
 __author__ = 'Peder Pedersen'
 
 app = Flask(__name__)
 # don't let flask use all the systems memory limit max file size to 16MB
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
+
+def init():
+    """
+    Initialise the app.  This code is essentially run on startup
+    """
+    # get the wiki to do it's start-up/setup
+    if 'HOME' in os.environ.keys():
+        wiki.startup(os.path.join(os.environ['HOME'], '.sideKick', 'default'))
+    else:
+        wiki.startup(os.path.join(os.environ['USERPROFILE'], '.sideKick', 'default'))
+
+    config.load_config()
 
 
 # Regular flask view function - Sijax is unavailable here
@@ -164,30 +180,72 @@ def WikiGit():
         return "415 Unsupported Media Type ;-) ......."
     return jsonify(resp)
 
+
+@app.route('/config', methods=['GET', 'POST'])
+def config_editor():
+    # validation errors
+    errors = {}
+    # values to display in the form
+    values = {}
+    success = None
+
+    for config_item in config.ALL_ITEMS:
+        values[config_item.key] = config_item.value
+
+    if request.method == 'POST':
+        for config_item in config.ALL_ITEMS:
+            submitted_value = request.form[config_item.key].strip()
+            error = config_item.validate(submitted_value)
+
+            if error:
+                errors[config_item.key] = error
+            else:
+                config_item.value = submitted_value
+
+            values[config_item.key] = submitted_value
+        
+        # Save if there are no errors
+        if not errors:
+            for config_item in config.ALL_ITEMS:
+                config_item.value = values[config_item.key]
+            config.save_config()
+            success = 'Config updated - some settings may not take effect without restarting'
+
+    return render_template('config_editor.html', ALL_ITEMS=config.ALL_ITEMS, errors=errors,
+                           values=values, success=success)
+
+
 if __name__ == '__main__':
-    # get the wiki to do it's start-up/setup
-    if 'HOME' in os.environ.keys():
-        wiki.startup(os.path.join(os.environ['HOME'], '.sideKick', 'default'))
-    else:
-        wiki.startup(os.path.join(os.environ['USERPROFILE'], '.sideKick', 'default'))
+    init()
 
     if 'SIDEKICK_PORT' in os.environ.keys():
         serverPort = os.environ['SIDEKICK_PORT']
     else:
-        serverPort = 8080
+        serverPort = config.PORT.value
 
     if 'SIDEKICK_IP' in os.environ.keys():
         serverIP = os.environ['SIDEKICK_IP']
     else:
-        serverIP = '127.0.0.1'
+        serverIP = config.IP_ADDRESS.value
         
     if 'SIDEKICK_DEBUG' in os.environ.keys():
         serverDebug = os.environ['SIDEKICK_DEBUG']
     else:
         serverDebug = False
-
+    
     app.logger.debug('web server port is: ' + str(serverPort))
     app.logger.debug('web server ip is: ' + serverIP)
-    app.run(debug=serverDebug, port=serverPort, host=serverIP)
+    try:
+        app.run(debug=serverDebug, port=serverPort, host=serverIP)
+    except socket.error:
+        print('ERROR: Can\'t attach to {}:{}'.format(serverIP, serverPort))
+        serverIP = '127.0.0.1'
+        serverPort = 8080
+        print('       Falling back to {}:{}'.format(serverIP, serverPort))
+        print()
+        print('Please fix your config!')
+        time.sleep(2)
+        app.run(debug=serverDebug, port=serverPort, host=serverIP)
+
     
     print("start-up done.")

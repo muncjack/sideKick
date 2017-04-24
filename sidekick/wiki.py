@@ -7,34 +7,69 @@ import os
 import re
 from os import listdir
 import shutil
-import subprocess
+import sys
 
 import mygit
 
 __author__ = 'Peder Pedersen'
 
-wikiBaseFileDir = ''
-wikiBaseAttchDir = ''
+# The base folder inside .sideKick/default
+WIKI_ROOT = 'wiki'
+
+# Top level directories inside wiki root
+FILES_DIR = 'files'
+ATTACHMENTS_DIR = 'attachments'
+CONFIG_DIR = 'config'
+USERS_DIR = 'users'
+
+MAIN_CONFIG_FILENAME = 'main.json'
+
+wikiBaseFileDir = None
+wikiBaseAttchDir = None
+wikiBaseConfigDir = None
+wikiBaseUsersDir = None
+
 global deBugMsg
 
 
 def startup(baseDir):
+    global wikiBaseFileDir, wikiBaseAttchDir, wikiBaseConfigDir, wikiBaseUsersDir, wikiRepo
+
     print('DEBUG: runing wiki start up checks')
-    global wikiBaseFileDir
-    global wikiBaseAttchDir
-    wikiBaseDir = os.path.join(baseDir, 'wiki')
-    wikiBaseFileDir = os.path.join(wikiBaseDir, 'files')
-    wikiBaseAttchDir = os.path.join(wikiBaseDir, 'attachements')
-    if os.path.exists(baseDir) == False:
-            print('SETUP: creating directories for wiki')
-            os.makedirs(baseDir)
-    if os.path.exists(wikiBaseFileDir) == False:
-        os.makedirs(wikiBaseFileDir)
-    if os.path.exists(wikiBaseAttchDir) == False:
-        os.makedirs(wikiBaseAttchDir)
-    global wikiRepo
+
+    if not os.path.exists(baseDir):
+        print('SETUP: creating directories for wiki')
+        os.makedirs(baseDir)
+
+    wikiBaseDir = os.path.join(baseDir, WIKI_ROOT)
+    if not os.path.exists(wikiBaseDir):
+        os.makedirs(wikiBaseDir)
+
+    old_attachments_dir = os.path.join(wikiBaseDir, 'attachements')
+    new_attachments_dir = os.path.join(wikiBaseDir, ATTACHMENTS_DIR)
+    if os.path.exists(old_attachments_dir):
+        print('WARNING: an old attachments directory found here: {}'.format(old_attachments_dir))
+        print('         This path is no longer supported.  To migrate your attachments ')
+        print('         run the following command:')
+        print()
+        print('  mv {} {}'.format(old_attachments_dir, new_attachments_dir))
+        print()
+        print('         Otherwise delete that folder to start this program')
+        print()
+        
+        # Do not allow the server to run until this is resolved!
+        sys.exit(1)
+    
+    wikiBaseFileDir = os.path.join(wikiBaseDir, FILES_DIR)
+    wikiBaseAttchDir = os.path.join(wikiBaseDir, ATTACHMENTS_DIR)
+    wikiBaseConfigDir = os.path.join(wikiBaseDir, CONFIG_DIR)
+    wikiBaseUsersDir = os.path.join(wikiBaseDir, USERS_DIR)
+    sub_dirs = [wikiBaseFileDir, wikiBaseAttchDir, wikiBaseConfigDir, wikiBaseUsersDir]
+    for sub_dir in sub_dirs:
+        if not os.path.exists(sub_dir):
+            os.makedirs(sub_dir)
+
     wikiRepo = mygit.startup(wikiBaseDir)
-    return True
 
 
 def deFang(reqStr):
@@ -127,16 +162,17 @@ def fileRename(request):
 
     Is this still used for anything?
     """
-    print(request['oldpath'])
-    op = webpath2ospath(request['oldpath'])
-    np = webpath2ospath(request['newpath'])
-    if op != np:
-        if not os.path.exists(np):
-            os.makedirs(Path)
-    op = os.path.join(op, request['oldfile'])
-    np = os.path.join(np, request['newfile'])
-    subprocess.Popen(['git mv', op, np], stdout=subprocess.PIPE)
-    wikiRepo.mv(oldfile, newfile)
+    raise Exception('This code is broken and no longer works!')
+    # print(request['oldpath'])
+    # op = webpath2ospath(request['oldpath'])
+    # np = webpath2ospath(request['newpath'])
+    # if op != np:
+    #     if not os.path.exists(np):
+    #         os.makedirs(Path)
+    # op = os.path.join(op, request['oldfile'])
+    # np = os.path.join(np, request['newfile'])
+    # subprocess.Popen(['git mv', op, np], stdout=subprocess.PIPE)
+    # wikiRepo.mv(oldfile, newfile)
 
 
 def fileSearch(s):
@@ -190,3 +226,6 @@ def gitAddCommitAll(msg):
         result['status'] = r2['status']
     return result
 
+
+def get_main_config_filename():
+    return os.path.join(wikiBaseConfigDir, MAIN_CONFIG_FILENAME)

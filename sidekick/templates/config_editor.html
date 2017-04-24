@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Config Editor{% endblock title %}
+
+
+{% block content %}
+	<div class="admin-page">
+		<div class="menu-bar">
+			<a href="{{ url_for('index') }}">&larr; Back to Wiki</a>
+		</div>
+
+		{% if errors %}
+			<div class="alert alert-danger">
+				Failed due to errors in form!
+			</div>
+		{% endif %}
+
+		<h1>Config Editor</h1>
+		
+		<form action="" method="post">
+			<table>
+				{% for item in ALL_ITEMS %}
+					<tr>
+						<th>{{ item.name }}</th>
+						<td>
+							<input type="text" name="{{ item.key }}" value="{{ values[item.key] }}">
+							{% if item.key in errors %}
+								<div class="error">
+									{{ errors[item.key] }}
+								</div>
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+				<tr>
+					<td></td>
+					<td><input type="submit" value="Update Config"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+{% endblock content %}

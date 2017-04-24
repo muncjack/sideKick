@@ -126,3 +126,28 @@ table.list tr.odd td {
 a.help {
     color: gray;
 }
+
+.alert {
+	border: 1px solid grey;
+	margin: 15px 5px;
+	padding: 5px;
+	font-weight: bold;
+}
+
+.alert.alert-danger {
+	border-color: #bb0000;
+	font-color: #bb0000;
+	background-color: #ffffdd;
+}
+
+.alert.alert-success {
+	border-color: #00bb00;
+	font-color: #00bb00;
+	background-color: #ddffdd;
+}
+
+.error {
+	font-weight: bold;
+	color: red;
+}
+
