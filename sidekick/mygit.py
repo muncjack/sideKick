@@ -39,15 +39,15 @@ class startup:
             print('working in CMD mode2')
             CMD = subprocess.Popen(self.gitcmd + ['status', '-uno', '-u'], stdout=subprocess.PIPE)
             r = CMD.communicate()
-            for line in r[0].split('\n'):
+            for line in r[0].decode("utf-8").split('\n'):
                 if '\tmodified:' in line or '#\tNew file:' in line or '#\tdeleted:' in line:
                     fileTracked.append(line.replace('#\t', ''))
                 elif '\t' in line:
                     fileUntracked.append(line.replace('#\t', ''))
-            if 'Your branch is ahead of' in r[0]:
+            if 'Your branch is ahead of' in r[0].decode("utf-8"):
                 pushRequired = 1
             # this in case the git repo diverge ....
-            if ' have diverged,' in r[0]:
+            if ' have diverged,' in r[0].decode("utf-8"):
                 pushRequired = -1
             
         elif self.mode == 'dulwich':
@@ -67,8 +67,8 @@ class startup:
                 CMD = subprocess.Popen(self.gitcmd + ['status', '-uno', '-u'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 r = CMD.communicate()[0]
                 if CMD.returncode == 0:
-                    print("DEBUG git:" + r)
-                    if 'Your branch is behind' in r:
+                    print("DEBUG git:" + str(r))
+                    if 'Your branch is behind' in r.decode("utf-8"):
                         action = 1
                     else:
                         action = 0
@@ -84,7 +84,8 @@ class startup:
         if self.mode == 'CMD':
             print('working in CMD mode')
             CMD = subprocess.Popen(self.gitcmd + ['pull'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            result['output'] = ''.join(CMD.communicate())
+            r = CMD.communicate()
+            result['output'] = ''.join([ r[0].decode("utf-8"), r[1].decode("utf-8") ])
             if CMD.returncode == 0:
                 result['status'] = 'OK'
             else:
@@ -100,7 +101,8 @@ class startup:
         if self.mode == 'CMD':
             print('working in CMD mode')
             CMD = subprocess.Popen(self.gitcmd + ['push'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            result['output'] = ''.join(CMD.communicate())
+            r = CMD.communicate()
+            result['output'] = ''.join([ r[0].decode("utf-8"), r[1].decode("utf-8") ])
             if CMD.returncode == 0:
                 result['status'] = 'OK'
             else:
@@ -116,7 +118,8 @@ class startup:
         if self.mode == 'CMD':
             print('working in CMD mode: ' + ' '.join(map(str, self.gitcmd)) + ' add ' + f)
             CMD = subprocess.Popen(self.gitcmd + ['add', f], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            result['output'] = ''.join(CMD.communicate())
+            r = CMD.communicate()
+            result['output'] = ''.join([ r[0].decode("utf-8"), r[1].decode("utf-8") ])
             if CMD.returncode == 0:
                 result['status'] = 'OK'
             else:
@@ -144,7 +147,8 @@ class startup:
         if self.mode == 'CMD':
             print('working in CMD mode')
             CMD = subprocess.Popen(self.gitcmd + ['commit', '-am', '"' + msg + '"'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            result['output'] = ''.join(CMD.communicate())
+            r = CMD.communicate()
+            result['output'] = ''.join([ r[0].decode("utf-8"), r[1].decode("utf-8") ])
             if CMD.returncode == 0:
                 result['status'] = 'OK'
             else:
